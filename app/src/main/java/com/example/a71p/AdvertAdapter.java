@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.io.File;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,8 +38,14 @@ public class AdvertAdapter extends RecyclerView.Adapter<AdvertAdapter.AdvertView
         holder.categoryTextView.setText("Category: " + advert.getCategory());
         holder.dateTextView.setText("Posted: " + advert.getDate());
 
-        if (!advert.getImagePath().isEmpty()) {
-            holder.advertImageView.setImageURI(Uri.parse(advert.getImagePath()));
+        String path = advert.getImagePath();
+
+        if (path != null && !path.isEmpty()) {
+            if (path.startsWith("content://")) {
+                holder.advertImageView.setImageURI(Uri.parse(path));
+            } else {
+                holder.advertImageView.setImageURI(Uri.fromFile(new java.io.File(path)));
+            }
         }
 
         holder.itemView.setOnClickListener(v -> {

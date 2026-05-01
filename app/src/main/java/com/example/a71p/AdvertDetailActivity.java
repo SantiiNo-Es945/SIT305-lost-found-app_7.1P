@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.io.File;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,7 +53,11 @@ public class AdvertDetailActivity extends AppCompatActivity {
         detailInfoTextView.setText(info);
 
         if (imagePath != null && !imagePath.isEmpty()) {
-            detailImageView.setImageURI(Uri.parse(imagePath));
+            if (imagePath.startsWith("content://")) {
+                detailImageView.setImageURI(Uri.parse(imagePath));
+            } else {
+                detailImageView.setImageURI(Uri.fromFile(new java.io.File(imagePath)));
+            }
         }
 
         removeAdvertButton.setOnClickListener(v -> {
